@@ -1,9 +1,11 @@
+import java.util.List;
 public class Account {
     private String accountId;
     private String userName;
     private double accountBalance;
+    private List<Transaction> transactionHistory;
 
-    public Account(String accountId){
+    public Account(String accountId, String userName, double accountBalance){
         this.accountId=accountId;
         this.userName=userName;
         this.accountBalance=0.0;
@@ -33,8 +35,7 @@ public class Account {
         }
         accountBalance -= amount;
     }
-    public Transaction[] getTransactionHistory() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionHistory'");
+    public List<Transaction> getTransactionHistory() {
+        return transactionHistory;
     }
 }

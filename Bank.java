@@ -34,10 +34,10 @@ public class Bank {
         double transactionFee;
 
         // Calculate transaction fee based on flat or percent fee
-        if (transactionPercentFeeValue > 0) {
-            transactionFee = amount * (transactionPercentFeeValue / 100.0);
+        if (transaction.getTransactionType() == TransactionType.WITHDRAWAL) {
+            transactionFee = calculateTransactionFee(amount);
         } else {
-            transactionFee = transactionFlatFeeAmount;
+            transactionFee = 0; // No fee for deposit transactions
         }
 
         // Deduct transaction fee from the transaction amount
@@ -45,21 +45,43 @@ public class Bank {
 
         // Update bank's total transaction fee amount
         totalTransactionFeeAmount += transactionFee;
-
-        // Perform the transaction between accounts
-        for (Account account : accounts) {
-            if (account.getAccountId().equals(transaction.getOriginatingAccountId())) {
-                // Withdraw amount from the originating account
-                account.withdraw(amount);
+        Account originatingAccount = findAccountById(transaction.getOriginatingAccountId());
+        Account resultingAccount = findAccountById(transaction.getResultingAccountId());
+    
+        if (originatingAccount != null && resultingAccount != null) {
+            if (transaction.getTransactionType() == TransactionType.WITHDRAWAL) {
+                // Check if the originating account has sufficient funds
+                if (originatingAccount.getAccountBalance() >= amount + transactionFee) {
+                    originatingAccount.withdraw(amount + transactionFee);
+                    resultingAccount.deposit(amountAfterFee);
+                    // Update total transfer amount
+                    totalTransferAmount += amountAfterFee;
+                } else {
+                    System.out.println("Error: Insufficient funds in the originating account");
+                }
+            } else {
+                originatingAccount.withdraw(amount + transactionFee);
+                resultingAccount.deposit(amountAfterFee);
+                // Update total transfer amount
+                totalTransferAmount += amountAfterFee;
             }
-            if (account.getAccountId().equals(transaction.getResultingAccountId())) {
-                // Deposit amount to the resulting account
-                account.deposit(amountAfterFee);
-            }
+        } else {
+            System.out.println("Error: One or both of the accounts do not exist");
         }
+        // // Perform the transaction between accounts
+        // for (Account account : accounts) {
+        //     if (account.getAccountId().equals(transaction.getOriginatingAccountId())) {
+        //         // Withdraw amount from the originating account
+        //         account.withdraw(amount);
+        //     }
+        //     if (account.getAccountId().equals(transaction.getResultingAccountId())) {
+        //         // Deposit amount to the resulting account
+        //         account.deposit(amountAfterFee);
+        //     }
+        // }
 
-        // Update total transfer amount
-        totalTransferAmount += amountAfterFee;
+        // // Update total transfer amount
+        // totalTransferAmount += amountAfterFee;
     }
     private double calculateTransactionFee(double amount) {
         if (transactionPercentFeeValue > 0) {

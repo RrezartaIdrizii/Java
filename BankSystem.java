@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.List;
 
 public class BankSystem {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Bank bank = null;
+        Account account=null;
 
         while (true) {
             // Display menu
@@ -42,12 +44,16 @@ public class BankSystem {
                     }
                     System.out.print("Enter account ID: ");
                     String accountId = scanner.nextLine();
-                    bank.addAccount(new Account(accountId));
+                    System.out.print("Enter account username: ");
+                    String userName = scanner.nextLine();
+                    System.out.print("Enter account balance: ");
+                    double accountBalance = scanner.nextDouble();
+                    bank.addAccount(new Account(accountId,userName,accountBalance));
                     System.out.println("Account created successfully.");
                     break;
                 case 3:
-                    if (bank == null) {
-                        System.out.println("Error: Bank not created yet.");
+                    if (bank == null && account == null) {
+                        System.out.println("Error: Bank and Account are not created yet.");
                         break;
                     }
                     performTransaction(scanner, bank);
