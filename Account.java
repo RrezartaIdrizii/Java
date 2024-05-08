@@ -8,7 +8,7 @@ public class Account {
     public Account(String accountId, String userName, double accountBalance){
         this.accountId=accountId;
         this.userName=userName;
-        this.accountBalance=0.0;
+        this.accountBalance=accountBalance;
     }
     public String getAccountId(){
         return accountId;

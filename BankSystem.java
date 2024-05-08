@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.List;
+
 public class BankSystem {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -201,7 +203,9 @@ public class BankSystem {
     private static void listBankAccounts(Bank bank) {
         System.out.println("Bank Accounts:");
         for (Account account : bank.getAccounts()) {
-            System.out.println("Account ID: " + account.getAccountId() + ", Balance: $" + account.getAccountBalance());
+            System.out.println("Account ID: " + account.getAccountId() + 
+                                ", Username: " + account.getUserName()+
+                                ", Balance: $" + account.getAccountBalance());
         }
     }
 
