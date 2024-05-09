@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 public class Account {
     private String accountId;
@@ -9,6 +10,7 @@ public class Account {
         this.accountId=accountId;
         this.userName=userName;
         this.accountBalance=accountBalance;
+        this.transactionHistory = new ArrayList<>();
     }
     public String getAccountId(){
         return accountId;
@@ -24,6 +26,9 @@ public class Account {
             throw new IllegalArgumentException("Deposit number must be positive");
         }
         accountBalance += amount;
+        double feeAmount = calculateTransactionFee(amount); 
+        accountBalance -= (amount + feeAmount);
+        transactionHistory.add(new Transaction(amount, accountId, "Deposit", "Regular Deposit", TransactionType.DEPOSIT, feeAmount));
     }
 
     public void withdraw(double amount) {
@@ -33,7 +38,15 @@ public class Account {
         if (accountBalance < amount) {
             throw new IllegalStateException("Insufficient funds");
         }
-        accountBalance -= amount;
+        
+        double feeAmount = calculateTransactionFee(amount); // Calculate the fee amount
+    accountBalance -= (amount + feeAmount);
+        transactionHistory.add(new Transaction(amount, accountId, "Withdrawal", "Regular withdrawal", TransactionType.WITHDRAWAL, feeAmount));
+    }
+
+    private double calculateTransactionFee(double amount) {
+        double feeAmount = amount * 0.01;
+        return feeAmount;
     }
     public List<Transaction> getTransactionHistory() {
         return transactionHistory;

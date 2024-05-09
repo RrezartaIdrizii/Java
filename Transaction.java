@@ -4,13 +4,15 @@ public class Transaction {
     private String  resultingAccountId;
     private String transactionReason;
     private TransactionType transactionType;
+    private double feeAmount; 
 
-    public Transaction(double amount,String  originatingAccountId,String  resultingAccountId,TransactionType transactionType){
+    public Transaction(double amount,String  originatingAccountId,String  resultingAccountId, String transactionReason,TransactionType transactionType,double feeAmount){
         this.amount=amount;
         this.originatingAccountId=originatingAccountId;
         this.resultingAccountId=resultingAccountId;
         this.transactionReason=transactionReason;
         this.transactionType = transactionType;
+        this.feeAmount = feeAmount;
 
     }
     public double getAmount() {
@@ -42,6 +44,12 @@ public class Transaction {
     }
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+    public double getFeeAmount() {
+        return feeAmount;
+    }
+    public void setFeeAmount(double feeAmount) {
+        this.feeAmount = feeAmount;
     }
     @Override
     public String toString() {
